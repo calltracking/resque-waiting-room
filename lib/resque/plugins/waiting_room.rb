@@ -15,6 +15,8 @@ module Resque
       end
 
       def before_perform_waiting_room(*args)
+        return unless @max_performs.present? && @period.present? # NOOP if not set
+
         key = waiting_room_redis_key(args)
         return unless remaining_performs_key?(key)
 
